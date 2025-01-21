@@ -25,10 +25,9 @@ import CategoryPage from "./pages/CategoryPage";
 import StatusPage from "./pages/StatusPage";
 import ConditionPage from "./pages/ConditionPage";
 import LocationPage from "./pages/LocationPage";
-
-const Home = () => <div>Home Page</div>;
-
-const Settings = () => <div>Settings Page</div>;
+import ItemPage from "./pages/ItemPage";
+import CreateItemPage from "./pages/item/CreateItemPage";
+import EditItemPage from "./pages/item/EditItemPage";
 
 const router = createBrowserRouter([
  {
@@ -36,17 +35,27 @@ const router = createBrowserRouter([
   element: <AuthLayout />, // No sidebar in AuthLayout
   loader: authLoader,
  },
-
  {
   path: "/",
   element: <MainLayout />, // Sidebar included in MainLayout
   loader: dashboardLoader,
   children: [
-   { path: "home", element: <Home /> },
+   {
+    path: "item",
+    element: <ItemPage />,
+   },
+   {
+    path: "item/create",
+    element: <CreateItemPage />,
+   },
+   {
+    path: "item/edit/:id",
+    element: <EditItemPage />,
+   },
    { path: "category", element: <CategoryPage /> },
    { path: "status", element: <StatusPage /> },
    { path: "condition", element: <ConditionPage /> },
-   { path: "locations", element: <LocationPage /> },
+   { path: "location", element: <LocationPage /> },
   ],
  },
 ]);

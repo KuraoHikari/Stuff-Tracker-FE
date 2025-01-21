@@ -10,36 +10,32 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import DeleteStatusDialog from "../DeleteStatusDialog";
+import { Item } from "../data/schema";
 import { useState } from "react";
-import EditStatusDialog from "../EditStatusDialog";
-import { Status } from "../data/schema";
+import DeleteItemDialog from "../DeleteItemDialog";
+import { useNavigate } from "react-router";
 
 interface DataTableRowActionsProps {
- row: { original: Status };
+ row: { original: Item };
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+ const navigate = useNavigate();
  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
- const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
- const [editStatus, setEditStatus] = useState<Status | null>(null);
 
  const handleDeleteClick = () => {
   setIsDeleteDialogOpen(true);
  };
 
- const handleEditClick = (
-  e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
-  status: Status
- ) => {
-  e.preventDefault();
-  setEditStatus(status);
-  setIsEditDialogOpen(true);
- };
-
  const handleCloseDeleteDialog = () => {
   setIsDeleteDialogOpen(false);
  };
+
+ const handleEditClick = () => {
+  console.log("Edit clicked");
+  navigate(`/item/edit/${row.original.id}`);
+ };
+
  return (
   <>
    <DropdownMenu>
@@ -53,13 +49,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
      </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" className="w-[160px]">
-     <DropdownMenuItem
-      onClick={(e) => {
-       handleEditClick(e, row.original);
-      }}
-     >
-      Edit
-     </DropdownMenuItem>
+     <DropdownMenuItem onClick={handleEditClick}>Edit</DropdownMenuItem>
 
      <DropdownMenuItem onClick={handleDeleteClick}>
       Delete
@@ -67,14 +57,8 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
      </DropdownMenuItem>
     </DropdownMenuContent>
    </DropdownMenu>
-   <EditStatusDialog
-    status={editStatus ?? row.original}
-    open={isEditDialogOpen}
-    onClose={() => setIsEditDialogOpen(false)}
-   />
-
-   <DeleteStatusDialog
-    status={row.original}
+   <DeleteItemDialog
+    item={row.original}
     open={isDeleteDialogOpen}
     onClose={handleCloseDeleteDialog}
    />

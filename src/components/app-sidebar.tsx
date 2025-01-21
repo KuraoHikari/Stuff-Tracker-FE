@@ -1,18 +1,12 @@
 import {
- Calendar,
  ChartNoAxesColumn,
  Cross,
  Dices,
  Home,
- Inbox,
- Locate,
- LocateFixedIcon,
  LogOut,
- Map,
  MapPin,
- MapPlus,
- Search,
- Settings,
+ Package,
+ PackagePlus,
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router";
 
@@ -31,9 +25,14 @@ import { useCallback } from "react";
 // Menu items.
 const items = [
  {
-  title: "Home",
-  url: "/home",
-  icon: Home,
+  title: "Item",
+  url: "/item",
+  icon: Package,
+ },
+ {
+  title: "Create Item",
+  url: "/item/create",
+  icon: PackagePlus,
  },
  {
   title: "Category",
@@ -52,7 +51,7 @@ const items = [
  },
  {
   title: "Location",
-  url: "/locations",
+  url: "/location",
   icon: MapPin,
  },
 ];
