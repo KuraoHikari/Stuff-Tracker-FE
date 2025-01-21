@@ -7,23 +7,24 @@ import {
  DialogTitle,
 } from "@/components/ui/dialog";
 
-import { Category } from "./data/schema";
-import useDeleteCategoryMutation from "@/hooks/useDeleteCategoryMutation";
+import { Condition } from "./data/schema";
+
 import { Button } from "@/components/ui/button";
 import LoadingButton from "@/components/LoadingButton";
+import useDeleteConditionMutation from "@/hooks/useDeleteConditionMutation";
 
-interface DeleteCategoryDialogProps {
- category: Category;
+interface DeleteConditionDialogProps {
+ condition: Condition;
  open: boolean;
  onClose: () => void;
 }
 
-export default function DeleteCategoryDialog({
- category,
+export default function DeleteConditionDialog({
+ condition,
  open,
  onClose,
-}: DeleteCategoryDialogProps) {
- const mutation = useDeleteCategoryMutation(category.id);
+}: DeleteConditionDialogProps) {
+ const mutation = useDeleteConditionMutation(condition.id);
 
  function handleOpenChange(open: boolean) {
   if (!open || !mutation.isPending) {
@@ -35,9 +36,9 @@ export default function DeleteCategoryDialog({
   <Dialog open={open} onOpenChange={handleOpenChange}>
    <DialogContent>
     <DialogHeader>
-     <DialogTitle>Delete Category?</DialogTitle>
+     <DialogTitle>Delete Condition?</DialogTitle>
      <DialogDescription>
-      Are you sure you want to delete this Category? This action cannot be
+      Are you sure you want to delete this Condition? This action cannot be
       undone.
      </DialogDescription>
     </DialogHeader>

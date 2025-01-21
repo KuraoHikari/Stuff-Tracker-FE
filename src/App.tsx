@@ -1,11 +1,9 @@
-import { useState } from "react";
 import {
  SidebarInset,
  SidebarProvider,
  SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-import { Button } from "./components/ui/button";
 import { AppSidebar } from "./components/app-sidebar";
 import { ThemeProvider } from "./components/theme-provider";
 import { Separator } from "./components/ui/separator";
@@ -17,13 +15,7 @@ import {
  BreadcrumbPage,
  BreadcrumbSeparator,
 } from "./components/ui/breadcrumb";
-import {
- createBrowserRouter,
- RouterProvider,
- Route,
- Outlet,
- Routes,
-} from "react-router";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router";
 import { authLoader } from "./loaders/authLoader";
 import AuthLayout from "./layout/authLayout";
 import { dashboardLoader } from "./loaders/dashboardLoader";
@@ -31,10 +23,10 @@ import ReactQueryProvider from "./context/ReactQueryProvider";
 import { Toaster } from "./components/ui/toaster";
 import CategoryPage from "./pages/CategoryPage";
 import StatusPage from "./pages/StatusPage";
+import ConditionPage from "./pages/ConditionPage";
 
 const Home = () => <div>Home Page</div>;
 
-const Search = () => <div>Search Page</div>;
 const Settings = () => <div>Settings Page</div>;
 
 const router = createBrowserRouter([
@@ -52,7 +44,7 @@ const router = createBrowserRouter([
    { path: "home", element: <Home /> },
    { path: "category", element: <CategoryPage /> },
    { path: "status", element: <StatusPage /> },
-   { path: "condition", element: <Search /> },
+   { path: "condition", element: <ConditionPage /> },
    { path: "settings", element: <Settings /> },
   ],
  },
@@ -87,8 +79,6 @@ function MainLayout() {
 }
 
 function App() {
- const [count, setCount] = useState(0);
-
  return (
   <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
    <ReactQueryProvider>

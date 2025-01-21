@@ -36,9 +36,9 @@ export default function DeleteStatusDialog({
   <Dialog open={open} onOpenChange={handleOpenChange}>
    <DialogContent>
     <DialogHeader>
-     <DialogTitle>Delete post?</DialogTitle>
+     <DialogTitle>Delete Status?</DialogTitle>
      <DialogDescription>
-      Are you sure you want to delete this post? This action cannot be undone.
+      Are you sure you want to delete this Status? This action cannot be undone.
      </DialogDescription>
     </DialogHeader>
     <DialogFooter>
