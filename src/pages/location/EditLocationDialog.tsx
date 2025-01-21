@@ -5,19 +5,21 @@ import {
  DialogHeader,
  DialogTitle,
 } from "@/components/ui/dialog";
-import { CreateStatusForm } from "./CreateStatusForm";
 
-// import { EditContactForm } from "@/components/custom-form/edit-contact-form";
+import { Location } from "./data/schema";
+import { EditLocationForm } from "./EditLocationForm";
 
-interface CreateStatusDialogProps {
+interface EditLocationDialogProps {
+ location: Location;
  open: boolean;
  onClose: () => void;
 }
 
-export default function CreateStatusDialog({
+export default function EditLocationDialog({
+ location,
  open,
  onClose,
-}: CreateStatusDialogProps) {
+}: EditLocationDialogProps) {
  function handleOpenChange(open: boolean) {
   if (!open) {
    onClose();
@@ -28,13 +30,12 @@ export default function CreateStatusDialog({
   <Dialog open={open} onOpenChange={handleOpenChange}>
    <DialogContent>
     <DialogHeader>
-     <DialogTitle>Create Status</DialogTitle>
+     <DialogTitle>Edit Location</DialogTitle>
      <DialogDescription>
-      Fill in the details below to create a new Status. Make sure to provide a
+      Fill in the details below to Edit a Location. Make sure to provide a
       unique name and a brief description.
      </DialogDescription>
-     <CreateStatusForm onClose={onClose} />
-     {/* <EditContactForm contact={contact} onClose={onClose} page={page} /> */}
+     <EditLocationForm onClose={onClose} location={location} />
     </DialogHeader>
    </DialogContent>
   </Dialog>

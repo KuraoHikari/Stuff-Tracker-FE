@@ -10,19 +10,19 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import DeletePostDialog from "../DeleteStatusDialog";
+import DeleteLocationDialog from "../DeleteLocationDialog";
 import { useState } from "react";
-import EditStatusDialog from "../EditStatusDialog";
-import { Status } from "../data/schema";
+import EditLocationDialog from "../EditLocationDialog";
+import { Location } from "../data/schema";
 
 interface DataTableRowActionsProps {
- row: { original: Status };
+ row: { original: Location };
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
- const [editStatus, setEditStatus] = useState<Status | null>(null);
+ const [editLocation, setEditLocation] = useState<Location | null>(null);
 
  const handleDeleteClick = () => {
   setIsDeleteDialogOpen(true);
@@ -30,10 +30,10 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
 
  const handleEditClick = (
   e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
-  status: Status
+  Location: Location
  ) => {
   e.preventDefault();
-  setEditStatus(status);
+  setEditLocation(Location);
   setIsEditDialogOpen(true);
  };
 
@@ -67,13 +67,13 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
      </DropdownMenuItem>
     </DropdownMenuContent>
    </DropdownMenu>
-   <EditStatusDialog
-    status={editStatus ?? row.original}
+   <EditLocationDialog
+    location={editLocation ?? row.original}
     open={isEditDialogOpen}
     onClose={() => setIsEditDialogOpen(false)}
    />
-   <DeletePostDialog
-    status={row.original}
+   <DeleteLocationDialog
+    location={row.original}
     open={isDeleteDialogOpen}
     onClose={handleCloseDeleteDialog}
    />

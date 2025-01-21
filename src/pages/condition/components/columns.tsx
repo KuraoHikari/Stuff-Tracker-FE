@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Category } from "../data/schema";
+import { Condition } from "../data/schema";
 
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { formatRelativeDate } from "@/lib/utils";
 
-export const columns: ColumnDef<Category>[] = [
+export const columns: ColumnDef<Condition>[] = [
  {
   accessorKey: "id",
   header: ({ column }) => <DataTableColumnHeader column={column} title="ID" />,

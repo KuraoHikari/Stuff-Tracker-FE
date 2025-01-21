@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Status } from "../data/schema";
+import { Location } from "../data/schema";
 
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { formatRelativeDate } from "@/lib/utils";
 
-export const columns: ColumnDef<Status>[] = [
+export const columns: ColumnDef<Location>[] = [
  {
   accessorKey: "id",
   header: ({ column }) => <DataTableColumnHeader column={column} title="ID" />,
@@ -26,14 +26,34 @@ export const columns: ColumnDef<Status>[] = [
   ),
  },
  {
-  accessorKey: "description",
+  accessorKey: "address",
   header: ({ column }) => (
-   <DataTableColumnHeader column={column} title="Description" />
+   <DataTableColumnHeader column={column} title="Address" />
   ),
   cell: ({ row }) => (
-   <div className="max-w-[500px] truncate">{row.getValue("description")}</div>
+   <div className="max-w-[500px] truncate">{row.getValue("address")}</div>
   ),
  },
+ {
+  accessorKey: "latitude",
+  header: ({ column }) => (
+   <DataTableColumnHeader column={column} title="Latitude" />
+  ),
+  cell: ({ row }) => (
+   <div className="max-w-[500px] truncate">{row.getValue("latitude")}</div>
+  ),
+ },
+
+ {
+  accessorKey: "longitude",
+  header: ({ column }) => (
+   <DataTableColumnHeader column={column} title="Longitude" />
+  ),
+  cell: ({ row }) => (
+   <div className="max-w-[500px] truncate">{row.getValue("longitude")}</div>
+  ),
+ },
+
  {
   accessorKey: "createdAt",
 

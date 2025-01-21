@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 
 import DeletePostDialog from "../DeleteConditionDialog";
 import { useState } from "react";
-import EditCategoryDialog from "../EditConditionDialog";
+import EditConditionDialog from "../EditConditionDialog";
 import { Condition } from "../data/schema";
 
 interface DataTableRowActionsProps {
@@ -67,7 +67,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
      </DropdownMenuItem>
     </DropdownMenuContent>
    </DropdownMenu>
-   <EditCategoryDialog
+   <EditConditionDialog
     condition={editCondition ?? row.original}
     open={isEditDialogOpen}
     onClose={() => setIsEditDialogOpen(false)}

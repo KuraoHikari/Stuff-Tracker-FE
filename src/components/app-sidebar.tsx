@@ -5,7 +5,12 @@ import {
  Dices,
  Home,
  Inbox,
+ Locate,
+ LocateFixedIcon,
  LogOut,
+ Map,
+ MapPin,
+ MapPlus,
  Search,
  Settings,
 } from "lucide-react";
@@ -41,14 +46,14 @@ const items = [
   icon: ChartNoAxesColumn,
  },
  {
-  title: "Conditions",
+  title: "Condition",
   url: "/condition",
   icon: Cross,
  },
  {
-  title: "Settings",
-  url: "/settings",
-  icon: Settings,
+  title: "Location",
+  url: "/locations",
+  icon: MapPin,
  },
 ];
 

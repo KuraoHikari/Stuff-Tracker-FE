@@ -24,6 +24,7 @@ import { Toaster } from "./components/ui/toaster";
 import CategoryPage from "./pages/CategoryPage";
 import StatusPage from "./pages/StatusPage";
 import ConditionPage from "./pages/ConditionPage";
+import LocationPage from "./pages/LocationPage";
 
 const Home = () => <div>Home Page</div>;
 
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
    { path: "category", element: <CategoryPage /> },
    { path: "status", element: <StatusPage /> },
    { path: "condition", element: <ConditionPage /> },
-   { path: "settings", element: <Settings /> },
+   { path: "locations", element: <LocationPage /> },
   ],
  },
 ]);
