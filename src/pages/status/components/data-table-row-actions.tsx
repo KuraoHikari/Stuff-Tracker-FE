@@ -9,19 +9,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-import { Category } from "../data/schema";
-import DeleteCatgoryDialog from "../DeleteCategoryDialog";
+
+import DeletePostDialog from "../DeleteStatusDialog";
 import { useState } from "react";
-import EditCategoryDialog from "../EditCategoryDialog";
+import EditCategoryDialog from "../EditStatusDialog";
+import { Status } from "../data/schema";
 
 interface DataTableRowActionsProps {
- row: { original: Category };
+ row: { original: Status };
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
- const [editCategory, setEditCategory] = useState<Category | null>(null);
+ const [editStatus, setEditStatus] = useState<Status | null>(null);
 
  const handleDeleteClick = () => {
   setIsDeleteDialogOpen(true);
@@ -29,10 +30,10 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
 
  const handleEditClick = (
   e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>,
-  category: Category
+  status: Status
  ) => {
   e.preventDefault();
-  setEditCategory(category);
+  setEditStatus(status);
   setIsEditDialogOpen(true);
  };
 
@@ -67,12 +68,12 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     </DropdownMenuContent>
    </DropdownMenu>
    <EditCategoryDialog
-    category={editCategory ?? row.original}
+    status={editStatus ?? row.original}
     open={isEditDialogOpen}
     onClose={() => setIsEditDialogOpen(false)}
    />
-   <DeleteCatgoryDialog
-    category={row.original}
+   <DeletePostDialog
+    status={row.original}
     open={isDeleteDialogOpen}
     onClose={handleCloseDeleteDialog}
    />

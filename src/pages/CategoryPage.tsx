@@ -10,7 +10,6 @@ const CategoryPage = () => {
  const [showCreateCategoryDialog, setShowCreateCategoryDialog] =
   useState<boolean>(false);
  const { data } = useGetCategories();
- console.log("🚀 ~ TaskPage ~ data:", data);
 
  const createCategoryDialog = (
   e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>

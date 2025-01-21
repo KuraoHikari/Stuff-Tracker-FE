@@ -30,10 +30,10 @@ import { dashboardLoader } from "./loaders/dashboardLoader";
 import ReactQueryProvider from "./context/ReactQueryProvider";
 import { Toaster } from "./components/ui/toaster";
 import CategoryPage from "./pages/CategoryPage";
+import StatusPage from "./pages/StatusPage";
 
 const Home = () => <div>Home Page</div>;
 
-const Calendar = () => <div>Calendar Page</div>;
 const Search = () => <div>Search Page</div>;
 const Settings = () => <div>Settings Page</div>;
 
@@ -51,8 +51,8 @@ const router = createBrowserRouter([
   children: [
    { path: "home", element: <Home /> },
    { path: "category", element: <CategoryPage /> },
-   { path: "calendar", element: <Calendar /> },
-   { path: "search", element: <Search /> },
+   { path: "status", element: <StatusPage /> },
+   { path: "condition", element: <Search /> },
    { path: "settings", element: <Settings /> },
   ],
  },

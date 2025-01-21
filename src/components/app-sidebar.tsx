@@ -1,5 +1,7 @@
 import {
  Calendar,
+ ChartNoAxesColumn,
+ Cross,
  Dices,
  Home,
  Inbox,
@@ -34,14 +36,14 @@ const items = [
   icon: Dices,
  },
  {
-  title: "Calendar",
-  url: "/calendar",
-  icon: Calendar,
+  title: "Status",
+  url: "/status",
+  icon: ChartNoAxesColumn,
  },
  {
-  title: "Search",
-  url: "/search",
-  icon: Search,
+  title: "Conditions",
+  url: "/condition",
+  icon: Cross,
  },
  {
   title: "Settings",

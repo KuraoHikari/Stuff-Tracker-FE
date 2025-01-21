@@ -7,23 +7,24 @@ import {
  DialogTitle,
 } from "@/components/ui/dialog";
 
-import { Category } from "./data/schema";
-import useDeleteCategoryMutation from "@/hooks/useDeleteCategoryMutation";
+import { Status } from "./data/schema";
+
 import { Button } from "@/components/ui/button";
 import LoadingButton from "@/components/LoadingButton";
+import useDeleteStatusMutation from "@/hooks/useDeleteStatusMutation";
 
-interface DeleteCategoryDialogProps {
- category: Category;
+interface DeleteStatusDialogProps {
+ status: Status;
  open: boolean;
  onClose: () => void;
 }
 
-export default function DeleteCategoryDialog({
- category,
+export default function DeleteStatusDialog({
+ status,
  open,
  onClose,
-}: DeleteCategoryDialogProps) {
- const mutation = useDeleteCategoryMutation(category.id);
+}: DeleteStatusDialogProps) {
+ const mutation = useDeleteStatusMutation(status.id);
 
  function handleOpenChange(open: boolean) {
   if (!open || !mutation.isPending) {
