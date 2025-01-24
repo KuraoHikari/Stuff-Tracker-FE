@@ -1,8 +1,5 @@
-import {
- SidebarInset,
- SidebarProvider,
- SidebarTrigger,
-} from "@/components/ui/sidebar";
+// Importing necessary components and hooks
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 import { AppSidebar } from "./components/app-sidebar";
 import { ThemeProvider } from "./components/theme-provider";
@@ -29,37 +26,50 @@ import ItemPage from "./pages/ItemPage";
 import CreateItemPage from "./pages/item/CreateItemPage";
 import EditItemPage from "./pages/item/EditItemPage";
 
+// Creating the router with routes and their respective components
 const router = createBrowserRouter([
  {
-  path: "/auth",
+  path: "/auth", // Route for authentication
   element: <AuthLayout />, // No sidebar in AuthLayout
-  loader: authLoader,
+  loader: authLoader, // Loader for authentication data
  },
  {
-  path: "/",
+  path: "/", // Root path
   element: <MainLayout />, // Sidebar included in MainLayout
-  loader: dashboardLoader,
+  loader: dashboardLoader, // Loader for dashboard data
   children: [
    {
-    path: "item",
-    element: <ItemPage />,
+    path: "item", // Route for item page
+    element: <ItemPage />, // Component for item page
    },
    {
-    path: "item/create",
-    element: <CreateItemPage />,
+    path: "item/create", // Route for creating an item
+    element: <CreateItemPage />, // Component for creating an item
    },
    {
-    path: "item/edit/:id",
-    element: <EditItemPage />,
+    path: "item/edit/:id", // Route for editing an item with a specific ID
+    element: <EditItemPage />, // Component for editing an item
    },
-   { path: "category", element: <CategoryPage /> },
-   { path: "status", element: <StatusPage /> },
-   { path: "condition", element: <ConditionPage /> },
-   { path: "location", element: <LocationPage /> },
+   {
+    path: "category", // Route for category page
+    element: <CategoryPage />, // Component for category page
+   },
+   {
+    path: "status", // Route for status page
+    element: <StatusPage />, // Component for status page
+   },
+   {
+    path: "condition", // Route for condition page
+    element: <ConditionPage />, // Component for condition page
+   },
+   {
+    path: "location", // Route for location page
+    element: <LocationPage />, // Component for location page
+   },
   ],
  },
 ]);
-
+// Main layout component with sidebar and header
 function MainLayout() {
  return (
   <>
@@ -88,6 +98,7 @@ function MainLayout() {
  );
 }
 
+// Main App component with theme and context providers
 function App() {
  return (
   <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -101,4 +112,5 @@ function App() {
  );
 }
 
+// Exporting the App component as default
 export default App;

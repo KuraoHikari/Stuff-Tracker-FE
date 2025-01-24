@@ -1,89 +1,64 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
- Form,
- FormControl,
- FormDescription,
- FormField,
- FormItem,
- FormLabel,
- FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { format } from "date-fns";
-import {
- Popover,
- PopoverContent,
- PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { Calendar as CalendarIcon } from "lucide-react";
-import {
- Select,
- SelectContent,
- SelectItem,
- SelectTrigger,
- SelectValue,
-} from "@/components/ui/select";
-import useGetCategories from "@/hooks/useGetCategories";
-import useGetStatus from "@/hooks/useGetStatus";
-import useGetCondition from "@/hooks/useGetCondition";
-import useGetLocation from "@/hooks/useGetLocation";
-import useCreateItemMutation from "@/hooks/useCreateItemMutation";
-import LoadingButton from "@/components/LoadingButton";
-import useGetItem from "@/hooks/useGetItem";
+// Importing required libraries and components for form handling and UI
+import { useForm } from "react-hook-form"; // React Hook Form for managing form state and validation
+import { zodResolver } from "@hookform/resolvers/zod"; // Resolver to integrate Zod schema validation with React Hook Form
+import * as z from "zod"; // Zod library for schema validation
+import { cn } from "@/lib/utils"; // Utility function for class name concatenation
+import { Button } from "@/components/ui/button"; // Button component
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"; // Form components for better structure and styling
+import { Input } from "@/components/ui/input"; // Input component
+import { Textarea } from "@/components/ui/textarea"; // Textarea component
+import { format } from "date-fns"; // Library for date formatting
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"; // Popover components for date picker UI
+import { Calendar } from "@/components/ui/calendar"; // Calendar component for selecting dates
+import { Calendar as CalendarIcon } from "lucide-react"; // Calendar icon
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Select dropdown components
+import useGetCategories from "@/hooks/useGetCategories"; // Hook to fetch categories
+import useGetStatus from "@/hooks/useGetStatus"; // Hook to fetch statuses
+import useGetCondition from "@/hooks/useGetCondition"; // Hook to fetch conditions
+import useGetLocation from "@/hooks/useGetLocation"; // Hook to fetch locations
+import useCreateItemMutation from "@/hooks/useCreateItemMutation"; // Hook for creating new items via mutation
+import LoadingButton from "@/components/LoadingButton"; // LoadingButton component for submit actions
+import useGetItem from "@/hooks/useGetItem"; // Hook to fetch items
 
+// Regular expression to validate CUID (unique IDs)
 const cuidRegex = /^c[^\s-]{8,}$/;
 
+// Zod schema for validating the Create Item form data
 export const createItemFormSchema = z.object({
- name: z.string().min(1).max(100),
- description: z.string().max(255).optional(),
- purchasePrice: z
-  .union([z.string().transform((val) => parseFloat(val)), z.number()])
-  .optional(),
- sellPrice: z
-  .union([z.string().transform((val) => parseFloat(val)), z.number()])
-  .optional(),
- estimatedValue: z
-  .union([z.string().transform((val) => parseFloat(val)), z.number()])
-  .optional(),
- purchaseDate: z
-  .union([z.string().transform((val) => new Date(val)), z.date()])
-  .optional(),
- expiredDate: z
-  .union([z.string().transform((val) => new Date(val)), z.date()])
-  .optional(),
+ name: z.string().min(1).max(100), // Name field: required, max 100 characters
+ description: z.string().max(255).optional(), // Description field: optional, max 255 characters
+ purchasePrice: z.union([z.string().transform((val) => parseFloat(val)), z.number()]).optional(), // Purchase Price: can be a string or number, optional
+ sellPrice: z.union([z.string().transform((val) => parseFloat(val)), z.number()]).optional(), // Sell Price: can be a string or number, optional
+ estimatedValue: z.union([z.string().transform((val) => parseFloat(val)), z.number()]).optional(), // Estimated Value: can be a string or number, optional
+ purchaseDate: z.union([z.string().transform((val) => new Date(val)), z.date()]).optional(), // Purchase Date: can be a string or date, optional
+ expiredDate: z.union([z.string().transform((val) => new Date(val)), z.date()]).optional(), // Expired Date: can be a string or date, optional
  categoryId: z
   .string()
   .refine((val) => cuidRegex.test(val), { message: "Invalid CUID" })
-  .optional(),
- image: z.string().url().optional(),
- conditionId: z.string().optional(),
- statusId: z.string().optional(),
- locationId: z.string().optional(),
+  .optional(), // Category ID: must match CUID format, optional
+ image: z.string().url().optional(), // Image field: must be a valid URL, optional
+ conditionId: z.string().optional(), // Condition ID: optional
+ statusId: z.string().optional(), // Status ID: optional
+ locationId: z.string().optional(), // Location ID: optional
 });
 
+// Main CreateItemForm component
 export default function CreateItemForm() {
- //get All item
+ // Fetching all items (currently not used but available)
  const {} = useGetItem();
 
- //get All category
- const { data: categoryData } = useGetCategories();
- //get All condition
- const { data: statusData } = useGetStatus();
- //get All status
- const { data: conditionData } = useGetCondition();
- //get All location
- const { data: locationData } = useGetLocation();
+ // Fetching categories, conditions, statuses, and locations
+ const { data: categoryData } = useGetCategories(); // Fetch categories
+ const { data: statusData } = useGetStatus(); // Fetch statuses
+ const { data: conditionData } = useGetCondition(); // Fetch conditions
+ const { data: locationData } = useGetLocation(); // Fetch locations
 
+ // Hook for creating a new item
  const { isPending, mutate } = useCreateItemMutation();
 
+ // Initializing form state and validation with React Hook Form and Zod
  const form = useForm<z.infer<typeof createItemFormSchema>>({
-  resolver: zodResolver(createItemFormSchema),
+  resolver: zodResolver(createItemFormSchema), // Using Zod for validation
   defaultValues: {
    name: "",
    description: "",
@@ -99,13 +74,14 @@ export default function CreateItemForm() {
   },
  });
 
+ // Function to handle form submission
  function onSubmit(values: z.infer<typeof createItemFormSchema>) {
-  //   mutate(values, { onSuccess: onClose });
-  mutate(values);
+  mutate(values); // Calls the mutation to create the item
  }
 
  return (
   <Form {...form}>
+   {/* Form element with controlled input fields */}
    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
     <FormField
      control={form.control}
@@ -129,11 +105,7 @@ export default function CreateItemForm() {
       <FormItem>
        <FormLabel>description</FormLabel>
        <FormControl>
-        <Textarea
-         placeholder="Placeholder"
-         className="resize-none"
-         {...field}
-        />
+        <Textarea placeholder="Placeholder" className="resize-none" {...field} />
        </FormControl>
        <FormDescription>Item's Description</FormDescription>
        <FormMessage />
@@ -205,29 +177,14 @@ export default function CreateItemForm() {
          <Popover>
           <PopoverTrigger asChild>
            <FormControl>
-            <Button
-             variant={"outline"}
-             className={cn(
-              "w-[240px] pl-3 text-left font-normal",
-              !field.value && "text-muted-foreground"
-             )}
-            >
-             {field.value ? (
-              format(field.value, "PPP")
-             ) : (
-              <span>Pick a date</span>
-             )}
+            <Button variant={"outline"} className={cn("w-[240px] pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
+             {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
             </Button>
            </FormControl>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-           <Calendar
-            mode="single"
-            selected={field.value}
-            onSelect={field.onChange}
-            initialFocus
-           />
+           <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
           </PopoverContent>
          </Popover>
          <FormDescription>Items's Purcase Date</FormDescription>
@@ -247,29 +204,14 @@ export default function CreateItemForm() {
          <Popover>
           <PopoverTrigger asChild>
            <FormControl>
-            <Button
-             variant={"outline"}
-             className={cn(
-              "w-[240px] pl-3 text-left font-normal",
-              !field.value && "text-muted-foreground"
-             )}
-            >
-             {field.value ? (
-              format(field.value, "PPP")
-             ) : (
-              <span>Pick a date</span>
-             )}
+            <Button variant={"outline"} className={cn("w-[240px] pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
+             {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
             </Button>
            </FormControl>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-           <Calendar
-            mode="single"
-            selected={field.value}
-            onSelect={field.onChange}
-            initialFocus
-           />
+           <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
           </PopoverContent>
          </Popover>
          <FormDescription>Item's Expired Date</FormDescription>

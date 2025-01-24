@@ -1,39 +1,21 @@
+// Import necessary hooks and components
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
- Form,
- FormControl,
- FormDescription,
- FormField,
- FormItem,
- FormLabel,
- FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
-import {
- Popover,
- PopoverContent,
- PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
-import {
- Select,
- SelectContent,
- SelectItem,
- SelectTrigger,
- SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import useGetCategories from "@/hooks/useGetCategories";
 import useGetStatus from "@/hooks/useGetStatus";
 import useGetCondition from "@/hooks/useGetCondition";
 import useGetLocation from "@/hooks/useGetLocation";
-// import useEditItemMutation from "@/hooks/useEditItemMutation";
 import LoadingButton from "@/components/LoadingButton";
 import useGetItem from "@/hooks/useGetItem";
 import useGetItemDetail from "@/hooks/useGetItemDetail";
@@ -41,26 +23,18 @@ import { useNavigate, useParams } from "react-router";
 import { useEffect } from "react";
 import useEditItemMutation from "@/hooks/useEditItemMutation";
 
+// Define a regular expression for validating CUIDs
 const cuidRegex = /^c[^\s-]{8,}$/;
 
+// Define the schema for the edit item form using Zod
 export const editItemFormSchema = z.object({
  name: z.string().min(1).max(100),
  description: z.string().max(255).optional(),
- purchasePrice: z
-  .union([z.string().transform((val) => parseFloat(val)), z.number()])
-  .optional(),
- sellPrice: z
-  .union([z.string().transform((val) => parseFloat(val)), z.number()])
-  .optional(),
- estimatedValue: z
-  .union([z.string().transform((val) => parseFloat(val)), z.number()])
-  .optional(),
- purchaseDate: z
-  .union([z.string().transform((val) => new Date(val)), z.date()])
-  .optional(),
- expiredDate: z
-  .union([z.string().transform((val) => new Date(val)), z.date()])
-  .optional(),
+ purchasePrice: z.union([z.string().transform((val) => parseFloat(val)), z.number()]).optional(),
+ sellPrice: z.union([z.string().transform((val) => parseFloat(val)), z.number()]).optional(),
+ estimatedValue: z.union([z.string().transform((val) => parseFloat(val)), z.number()]).optional(),
+ purchaseDate: z.union([z.string().transform((val) => new Date(val)), z.date()]).optional(),
+ expiredDate: z.union([z.string().transform((val) => new Date(val)), z.date()]).optional(),
  categoryId: z
   .string()
   .refine((val) => cuidRegex.test(val), { message: "Invalid CUID" })
@@ -71,15 +45,19 @@ export const editItemFormSchema = z.object({
  locationId: z.string().optional(),
 });
 
+// Define and export the EditItemForm functional component
 export default function EditItemForm() {
+ // Get the item ID from the URL parameters
  const { id } = useParams();
+ // Get the navigate function to programmatically navigate
  const navigate = useNavigate();
 
+ // Redirect to the item list page if no ID is provided
  if (!id) {
   navigate("/item");
  }
 
- // Fetch necessary data
+ // Fetch necessary data using custom hooks
  const {} = useGetItem();
  const { data: categoryData } = useGetCategories();
  const { data: statusData } = useGetStatus();
@@ -87,8 +65,10 @@ export default function EditItemForm() {
  const { data: locationData } = useGetLocation();
  const { data: itemDetail, isLoading } = useGetItemDetail(id as string);
 
+ // Get the mutation object for editing the item
  const { isPending, mutate } = useEditItemMutation(id as string);
 
+ // Initialize the form with default values and validation schema
  const form = useForm<z.infer<typeof editItemFormSchema>>({
   resolver: zodResolver(editItemFormSchema),
   defaultValues: {
@@ -106,9 +86,10 @@ export default function EditItemForm() {
   },
  });
 
+ // Destructure the setValue function from the form object
  const { setValue } = form;
 
- // Update default values when data is loaded
+ // Update default values when item details are loaded
  useEffect(() => {
   if (itemDetail && !isLoading) {
    setValue("name", itemDetail.name || "");
@@ -125,11 +106,13 @@ export default function EditItemForm() {
   }
  }, [itemDetail, isLoading, setValue]);
 
+ // Handle form submission
  function onSubmit(values: z.infer<typeof editItemFormSchema>) {
   mutate(values);
   navigate("/item");
  }
 
+ // Show a loading message while data is being fetched
  if (isLoading) {
   return <div>Loading...</div>;
  }
@@ -159,11 +142,7 @@ export default function EditItemForm() {
       <FormItem>
        <FormLabel>description</FormLabel>
        <FormControl>
-        <Textarea
-         placeholder="Placeholder"
-         className="resize-none"
-         {...field}
-        />
+        <Textarea placeholder="Placeholder" className="resize-none" {...field} />
        </FormControl>
        <FormDescription>Item's Description</FormDescription>
        <FormMessage />
@@ -235,29 +214,14 @@ export default function EditItemForm() {
          <Popover>
           <PopoverTrigger asChild>
            <FormControl>
-            <Button
-             variant={"outline"}
-             className={cn(
-              "w-[240px] pl-3 text-left font-normal",
-              !field.value && "text-muted-foreground"
-             )}
-            >
-             {field.value ? (
-              format(field.value, "PPP")
-             ) : (
-              <span>Pick a date</span>
-             )}
+            <Button variant={"outline"} className={cn("w-[240px] pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
+             {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
             </Button>
            </FormControl>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-           <Calendar
-            mode="single"
-            selected={field.value}
-            onSelect={field.onChange}
-            initialFocus
-           />
+           <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
           </PopoverContent>
          </Popover>
          <FormDescription>Items's Purcase Date</FormDescription>
@@ -277,29 +241,14 @@ export default function EditItemForm() {
          <Popover>
           <PopoverTrigger asChild>
            <FormControl>
-            <Button
-             variant={"outline"}
-             className={cn(
-              "w-[240px] pl-3 text-left font-normal",
-              !field.value && "text-muted-foreground"
-             )}
-            >
-             {field.value ? (
-              format(field.value, "PPP")
-             ) : (
-              <span>Pick a date</span>
-             )}
+            <Button variant={"outline"} className={cn("w-[240px] pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
+             {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
             </Button>
            </FormControl>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-           <Calendar
-            mode="single"
-            selected={field.value}
-            onSelect={field.onChange}
-            initialFocus
-           />
+           <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
           </PopoverContent>
          </Popover>
          <FormDescription>Item's Expired Date</FormDescription>
@@ -319,11 +268,7 @@ export default function EditItemForm() {
        render={({ field }) => (
         <FormItem>
          <FormLabel>Category</FormLabel>
-         <Select
-          onValueChange={field.onChange}
-          value={field.value || ""}
-          defaultValue={itemDetail?.categoryId || ""}
-         >
+         <Select onValueChange={field.onChange} value={field.value || ""} defaultValue={itemDetail?.categoryId || ""}>
           <FormControl>
            <SelectTrigger>
             <SelectValue placeholder="Select a category" />
@@ -351,11 +296,7 @@ export default function EditItemForm() {
        render={({ field }) => (
         <FormItem>
          <FormLabel>Condition</FormLabel>
-         <Select
-          onValueChange={field.onChange}
-          value={field.value || ""}
-          defaultValue={itemDetail?.conditionId || ""}
-         >
+         <Select onValueChange={field.onChange} value={field.value || ""} defaultValue={itemDetail?.conditionId || ""}>
           <FormControl>
            <SelectTrigger>
             <SelectValue placeholder="Select a condition" />
@@ -385,11 +326,7 @@ export default function EditItemForm() {
        render={({ field }) => (
         <FormItem>
          <FormLabel>Status</FormLabel>
-         <Select
-          onValueChange={field.onChange}
-          value={field.value || ""}
-          defaultValue={itemDetail?.statusId || ""}
-         >
+         <Select onValueChange={field.onChange} value={field.value || ""} defaultValue={itemDetail?.statusId || ""}>
           <FormControl>
            <SelectTrigger>
             <SelectValue placeholder="Select a status" />
@@ -417,11 +354,7 @@ export default function EditItemForm() {
        render={({ field }) => (
         <FormItem>
          <FormLabel>Location</FormLabel>
-         <Select
-          onValueChange={field.onChange}
-          value={field.value || ""}
-          defaultValue={itemDetail?.locationId || ""}
-         >
+         <Select onValueChange={field.onChange} value={field.value || ""} defaultValue={itemDetail?.locationId || ""}>
           <FormControl>
            <SelectTrigger>
             <SelectValue placeholder="Select a location" />
